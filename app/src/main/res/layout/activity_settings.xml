@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.saienko.androidthings.barman.ui.settings.SettingsActivity"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="89dp">
+
+    <Button
+        android:id="@+id/btnMotors"
+        style="@style/square_button"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Motors"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnGpio"
+        style="@style/square_button"
+        android:layout_marginStart="8dp"
+        android:text="Gpio"
+        app:layout_constraintStart_toEndOf="@+id/btnMotors"
+        app:layout_constraintTop_toTopOf="@+id/btnMotors" />
+
+    <Button
+        android:id="@+id/btnComponent"
+        style="@style/square_button"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Component"
+        app:layout_constraintStart_toEndOf="@+id/btnGroup"
+        app:layout_constraintTop_toBottomOf="@+id/btnGpio" />
+
+    <Button
+        android:id="@+id/btnCocktails"
+        style="@style/square_button"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Cocktails"
+        app:layout_constraintStart_toEndOf="@+id/btnComponent"
+        app:layout_constraintTop_toBottomOf="@+id/btnGpio" />
+
+    <!--<Button-->
+        <!--android:id="@+id/btnBottles"-->
+        <!--style="@style/square_button"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:text="Bottles"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/btnVolume"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/btnComponent" />-->
+
+    <Button
+        android:id="@+id/btnPositions"
+        style="@style/square_button"
+        android:layout_marginTop="8dp"
+        android:text="Positions"
+        app:layout_constraintStart_toStartOf="@+id/btnGroup"
+        app:layout_constraintTop_toBottomOf="@+id/btnGroup" />
+
+    <Button
+        android:id="@+id/btnGroup"
+        style="@style/square_button"
+        android:layout_marginTop="8dp"
+        android:text="Groups"
+        app:layout_constraintStart_toStartOf="@+id/btnMotors"
+        app:layout_constraintTop_toBottomOf="@+id/btnMotors" />
+
+</android.support.constraint.ConstraintLayout>

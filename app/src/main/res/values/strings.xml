@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Barman IoT</string>
+    <string name="menu_remove_all">Remove all</string>
+    <string name="activity_name_settings">Settings</string>
+    <string name="activity_name_motors">Motors</string>
+    <string name="activity_name_gpios">Gpio</string>
+    <string name="activity_name_drinks">Drinks</string>
+    <string name="activity_name_drink_groups">Drink Groups</string>
+    <string name="activity_name_drink_components">Components</string>
+    <string name="activity_name_motor_details">Motor details</string>
+    <string name="title_activity_settings_bottles">SettingsBottlesActivity</string>
+    <string name="menu_clear">Clear</string>
+    <string name="title_activity_add_cocktail">Add cocktail</string>
+</resources>

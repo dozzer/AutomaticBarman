@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.saienko.androidthings.barman">
+
+    <application
+        android:name=".AlcoApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+         <!--<uses-library android:name="com.google.android.things" />-->
+
+        <activity android:name=".ui.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Launch activity automatically on boot -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.IOT_LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:label="@string/activity_name_settings"
+            android:parentActivityName=".ui.MainActivity" />
+
+        <service
+            android:name=".service.CocktailService"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.settings.SettingsMotorActivity"
+            android:label="@string/activity_name_motors"
+            android:parentActivityName=".ui.settings.SettingsActivity" />
+        <activity
+            android:name=".ui.settings.SettingsGpioActivity"
+            android:label="@string/activity_name_gpios"
+            android:parentActivityName=".ui.settings.SettingsActivity" />
+        <activity
+            android:name=".ui.settings.SettingsCocktailsActivity"
+            android:label="@string/activity_name_drinks"
+            android:parentActivityName=".ui.settings.SettingsActivity" />
+        <activity
+            android:name=".ui.settings.SettingsDrinkGroupsActivity"
+            android:label="@string/activity_name_drink_groups"
+            android:parentActivityName=".ui.settings.SettingsActivity" />
+        <activity
+            android:name=".ui.settings.AddMotorActivity"
+            android:label="@string/activity_name_motor_details"
+            android:parentActivityName=".ui.settings.SettingsMotorActivity" />
+        <activity
+            android:name=".ui.settings.SettingsComponentActivity"
+            android:label="@string/activity_name_drink_components"
+            android:parentActivityName=".ui.settings.SettingsActivity" />
+        <activity
+            android:name=".ui.settings.SettingsBottlesActivity"
+            android:label="@string/title_activity_settings_bottles"
+            android:parentActivityName=".ui.settings.SettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.saienko.androidthings.barman.ui.settings.SettingsActivity" />
+        </activity>
+        <activity
+            android:name=".ui.settings.AddCocktailActivity"
+            android:label="@string/title_activity_add_cocktail"
+            android:parentActivityName=".ui.settings.SettingsCocktailsActivity" />
+        <activity
+            android:name=".ui.settings.SettingsPositionsActivity"
+            android:parentActivityName=".ui.settings.SettingsActivity" />
+        <activity
+            android:name=".ui.settings.AddPositionActivity"
+            android:parentActivityName=".ui.settings.SettingsPositionsActivity" />
+        <activity
+            android:name=".ui.CocktailActivity"
+            android:parentActivityName=".ui.MainActivity" />
+        <activity
+            android:name=".ui.settings.ViewGpioActivity"
+            android:parentActivityName=".ui.settings.SettingsGpioActivity" />
+    </application>
+
+</manifest>

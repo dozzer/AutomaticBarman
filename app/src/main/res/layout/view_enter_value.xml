@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:showIn="@layout/dialog_add_component">
+
+    <ImageButton
+        android:id="@+id/ibMinusTen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        app:srcCompat="@drawable/ic_minus_ten" />
+
+    <ImageButton
+        android:id="@+id/ibMinus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/ibMinusTen"
+        app:srcCompat="@drawable/ic_minus" />
+
+    <ImageButton
+        android:id="@+id/ibPlus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ibMinus"
+        android:layout_toStartOf="@+id/ibPlusTen"
+        app:srcCompat="@drawable/ic_plus" />
+
+    <ImageButton
+        android:id="@+id/ibPlusTen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/ibMinus"
+        app:srcCompat="@drawable/ic_plus_ten" />
+
+    <EditText
+        android:id="@+id/etVolume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ibMinus"
+        android:layout_toEndOf="@+id/ibMinus"
+        android:layout_toStartOf="@+id/ibPlus"
+        android:ems="10"
+        android:enabled="false"
+        android:inputType="number"
+        android:text="50" />
+</RelativeLayout>

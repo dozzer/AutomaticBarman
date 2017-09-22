@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!--<string-array name="devlight">-->
+        <!--<item>#ffa100</item>// 255 161-->
+        <!--<item>#eba100</item>-->
+        <!--&lt;!&ndash;<item>#e08e00</item>// 224 142&ndash;&gt;-->
+        <!--&lt;!&ndash;<item>#b87400</item>&ndash;&gt;-->
+        <!--&lt;!&ndash;<item>#8f5a00</item>&ndash;&gt;-->
+        <!--&lt;!&ndash;<item>#694200</item>&ndash;&gt;-->
+        <!--&lt;!&ndash;<item>#694200</item>&ndash;&gt;-->
+    <!--</string-array>-->
+
+    <!--<string-array name="bg">-->
+        <!--<item>#64ffa50a</item>-->
+        <!--<item>#64e08e00</item>-->
+        <!--<item>#64b87400</item>-->
+        <!--<item>#648f5a00</item>-->
+    <!--</string-array>-->
+
+    <!--<string-array name="polluted_waves">-->
+        <!--<item>#394948</item>-->
+        <!--<item>#5a7874</item>-->
+        <!--<item>#499092</item>-->
+        <!--<item>#43abae</item>-->
+    <!--</string-array>-->
+
+    <!--<string-array name="medical_express">-->
+        <!--<item>#a3a3a3</item>-->
+        <!--<item>#bbbbbb</item>-->
+        <!--<item>#cccccc</item>-->
+        <!--<item>#dddddd</item>-->
+    <!--</string-array>-->
+
+
+    <array name="grey">
+        <item>@color/grey_100</item>
+        <item>@color/grey_200</item>
+        <item>@color/grey_300</item>
+        <item>@color/grey_400</item>
+        <item>@color/grey_500</item>
+        <item>@color/grey_600</item>
+        <item>@color/grey_700</item>
+        <item>@color/grey_800</item>
+    </array>
+
+    <array name="green">
+        <item>@color/green_900</item>
+        <item>@color/green_800</item>
+        <item>@color/green_700</item>
+        <item>@color/green_600</item>
+        <item>@color/green_500</item>
+        <item>@color/green_400</item>
+        <item>@color/green_300</item>
+        <item>@color/green_200</item>
+    </array>
+    <array name="orange">
+        <item>@color/orange_100</item>
+        <item>@color/orange_200</item>
+        <item>@color/orange_300</item>
+        <item>@color/orange_400</item>
+        <item>@color/orange_500</item>
+        <item>@color/orange_600</item>
+        <item>@color/orange_700</item>
+        <item>@color/orange_800</item>
+        <item>@color/orange_900</item>
+    </array>
+
+</resources>

@@ -11,8 +11,8 @@
     </style>
 
     <style name="square_button">
-        <item name="android:layout_height">150dp</item>
-        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">@dimen/square_size</item>
+        <item name="android:layout_width">@dimen/square_size</item>
     </style>
 
     <style name="fab">

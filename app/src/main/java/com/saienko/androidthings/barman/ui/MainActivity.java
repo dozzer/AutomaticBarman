@@ -46,9 +46,6 @@ public class MainActivity extends BaseActivity {
 
     private ImageButton  btnSettings;
     private RecyclerView rvCocktails;
-//    private View         demoView;
-
-//    private Button button1;
 
     private CocktailAdapter adapter;
 
@@ -73,18 +70,12 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showCocktails(List<Cocktail> cocktailList) {
-//        if (cocktailList.isEmpty()) {
-//            demoView.setVisibility(View.VISIBLE);
-//            rvCocktails.setVisibility(View.GONE);
-//        } else {
-//            demoView.setVisibility(View.GONE);
         rvCocktails.setVisibility(View.VISIBLE);
         rvCocktails.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new GridLayoutManager(this, 3);
         rvCocktails.setLayoutManager(layoutManager);
         rvCocktails.setAdapter(getAdapter());
         getAdapter().addItems(cocktailList);
-//        }
     }
 
     private CocktailAdapter getAdapter() {
@@ -99,15 +90,8 @@ public class MainActivity extends BaseActivity {
         super.initUI();
         btnSettings = findViewById(R.id.settingsBtn);
         btnSettings.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), SettingsActivity.class)));
-//        button1 = findViewById(R.id.btnCocktail1);
-//        button1.setOnClickListener(v -> createCocktail(getAdapter().getItems().get(0)));
-//        demoView = findViewById(R.id.demo_view);
         rvCocktails = findViewById(R.id.rvCocktails);
     }
-
-//    private void createCocktail(Cocktail cocktail) {
-//        CocktailService.startCocktail(this, cocktail);
-//    }
 
     void getDeviceList() {
         Log.d(TAG, "getDeviceList() called");

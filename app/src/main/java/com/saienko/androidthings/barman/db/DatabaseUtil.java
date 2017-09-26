@@ -8,6 +8,10 @@ import com.saienko.androidthings.barman.db.drinkGroup.CocktailGroup;
 import com.saienko.androidthings.barman.db.gpio.Gpio;
 import com.saienko.androidthings.barman.db.motor.Motor;
 import com.saienko.androidthings.barman.db.position.Position;
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
+import io.reactivex.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +25,12 @@ import java.util.List;
 
 public class DatabaseUtil {
 
-    // TODO: 9/26/17 migrate to Room converters
-
     private DatabaseUtil() {
         throw new IllegalStateException("Utility class");
     }
 
     @WorkerThread
-    public static List<Cocktail> load(List<Cocktail> cocktails) {
+    private static List<Cocktail> load(List<Cocktail> cocktails) {
         for (Cocktail cocktail : cocktails) {
             load(cocktail);
         }
@@ -51,7 +53,7 @@ public class DatabaseUtil {
     }
 
     @WorkerThread
-    public static CocktailElement load(CocktailElement cocktailElement) {
+    private static CocktailElement load(CocktailElement cocktailElement) {
         cocktailElement.setComponent(AppDatabase.getDb().componentDao().getById(cocktailElement.getComponentId()));
         Position position = AppDatabase.getDb().positionDao().getByComponentId(cocktailElement.getComponentId());
         if (position != null) {
@@ -71,18 +73,39 @@ public class DatabaseUtil {
     }
 
     @WorkerThread
-    public static Motor load(Motor motor) {
+    private static Motor load(Motor motor) {
         motor.setGpio(AppDatabase.getDb().gpioDao().get(motor.getGpioId()));
         return motor;
     }
 
     @WorkerThread
     public static List<Cocktail> getCocktails() {
-        return load(AppDatabase.getDb().cocktailDao().getAll());
+        List<Cocktail> cocktailList = load(AppDatabase.getDb().cocktailDao().getAll());
+
+        return getPossibleCocktails(cocktailList);
+    }
+
+    private static List<Cocktail> getPossibleCocktails(List<Cocktail> cocktailList) {
+        List<Cocktail> out = new ArrayList<>(cocktailList.size());
+        for (Cocktail cocktail : cocktailList) {
+            if (isPositionCorrect(cocktail)) {
+                out.add(cocktail);
+            }
+        }
+        return out;
+    }
+
+    private static boolean isPositionCorrect(Cocktail cocktail) {
+        for (CocktailElement cocktailElement : cocktail.getCocktailElements()) {
+            if (cocktailElement.getPosition() == null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @WorkerThread
-    public static Position load(Position position) {
+    private static Position load(Position position) {
         Motor motor = AppDatabase.getDb().motorDao().getById(position.getMotorId());
         if (motor != null) {
             position.setMotor(load(motor));
@@ -176,6 +199,7 @@ public class DatabaseUtil {
         }
     }
 
+    @WorkerThread
     private static void save(long cocktailId, List<CocktailElement> cocktailElements) {
         if (cocktailElements != null) {
             for (CocktailElement element : cocktailElements) {
@@ -205,7 +229,7 @@ public class DatabaseUtil {
         }
     }
 
-    public static long[] toPrimitives(Long... objects) {
+    private static long[] toPrimitives(Long... objects) {
 
         long[] primitives = new long[objects.length];
         for (int i = 0; i < objects.length; i++)

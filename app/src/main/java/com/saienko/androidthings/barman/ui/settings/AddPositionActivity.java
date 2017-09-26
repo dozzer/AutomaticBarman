@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
+import com.google.android.things.pio.Gpio;
+import com.google.android.things.pio.PeripheralManagerService;
 import com.saienko.androidthings.barman.R;
 import com.saienko.androidthings.barman.Utils;
 import com.saienko.androidthings.barman.db.DatabaseUtil;
@@ -13,8 +15,6 @@ import com.saienko.androidthings.barman.db.cocktail.Component;
 import com.saienko.androidthings.barman.db.position.Position;
 import com.saienko.androidthings.barman.ui.base.BaseActivity;
 import com.saienko.androidthings.barman.ui.settings.adapter.SelectComponentAdapter;
-import com.google.android.things.pio.Gpio;
-import com.google.android.things.pio.PeripheralManagerService;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -63,11 +63,7 @@ public class AddPositionActivity extends BaseActivity {
 
     private void handleIntent() {
         position = getIntent().getParcelableExtra(EXTRA_POSITION);
-        if (getIntent().hasExtra(EXTRA_EDIT)) {
-            isNew = false;
-        } else {
-            isNew = true;
-        }
+        isNew = !getIntent().hasExtra(EXTRA_EDIT);
     }
 
     @Override
@@ -80,7 +76,7 @@ public class AddPositionActivity extends BaseActivity {
 
         btnPour.setOnTouchListener((view, motionEvent) -> {
             switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN: // нажатие
+                case MotionEvent.ACTION_DOWN:
                     btnPour.setBackgroundColor(getColor(R.color.colorAccent));
                     startPour(position);
                     break;
@@ -88,6 +84,8 @@ public class AddPositionActivity extends BaseActivity {
                 case MotionEvent.ACTION_CANCEL:
                     btnPour.setBackgroundColor(getColor(R.color.lighter_gray));
                     endPour();
+                    break;
+                default:
                     break;
             }
             return false;
@@ -111,21 +109,23 @@ public class AddPositionActivity extends BaseActivity {
             savePosition(position);
         });
 
-        Single.fromCallable(DatabaseUtil::getFreeComponents).subscribeOn(Schedulers.io())
-              .observeOn(AndroidSchedulers.mainThread())
-              .subscribe(components -> {
-                  componentList = components;
-                  spinnerComponent.setAdapter(getAdapter());
-                  if (!isNew) {
-                      spinnerComponent.setSelection(getPosition(componentList, position.getComponent().getId()));
-                  }
-              });
         if (isNew) {
-            // TODO: 9/14/17
+            Single.fromCallable(DatabaseUtil::getFreeComponents).subscribeOn(Schedulers.io())
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(components -> {
+                      componentList = components;
+                      spinnerComponent.setAdapter(getAdapter());
+                  });
         } else {
-            // TODO: 9/14/17
-//            spinnerComponent.setSelection(getPosition(componentList, position.getComponent().getId()));
-//            fail
+            Single.fromCallable(DatabaseUtil::getComponents).subscribeOn(Schedulers.io())
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(components -> {
+                      componentList = components;
+                      spinnerComponent.setAdapter(getAdapter());
+                      if (!isNew) {
+                          spinnerComponent.setSelection(getPosition(componentList, position.getComponent().getId()));
+                      }
+                  });
         }
     }
 
@@ -177,14 +177,6 @@ public class AddPositionActivity extends BaseActivity {
             }
         }
         return 0;
-    }
-
-    private void setMotorWork(boolean value) {
-        try {
-            mLedGpio.setValue(value);
-        } catch (IOException e) {
-            Log.e(TAG, "Error updating GPIO value", e);
-        }
     }
 
 }

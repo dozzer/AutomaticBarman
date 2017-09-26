@@ -11,4 +11,15 @@
     <string name="title_activity_settings_bottles">SettingsBottlesActivity</string>
     <string name="menu_clear">Clear</string>
     <string name="title_activity_add_cocktail">Add cocktail</string>
+    <string name="close">Close</string>
+    <string name="save">Save</string>
+    <string name="motor_name">Motor name</string>
+    <string name="gpio">GPIO</string>
+    <string name="name">Name</string>
+    <string name="speed">Speed</string>
+    <string name="test">Test</string>
+    <string name="component">Component</string>
+    <string name="pour">Pour</string>
+    <string name="delete">Delete</string>
+    <string name="integer_value">%d</string>
 </resources>

@@ -98,4 +98,13 @@ public class Gpio implements Parcelable {
         @Override
         public Gpio[] newArray(int size) {return new Gpio[size];}
     };
+
+    @Override
+    public String toString() {
+        return "Gpio{" +
+               "gpioId=" + gpioId +
+               ", gpioPin=" + gpioPin +
+               ", gpioName='" + gpioName + '\'' +
+               '}';
+    }
 }

@@ -72,7 +72,6 @@ public class CocktailActivity extends BaseActivity {
         mArcProgressStackView = findViewById(R.id.apsv);
 
         final int[] startColors = getResources().getIntArray(R.array.green);
-//        final int[] endColors   = getResources().getIntArray(R.array.orange);
         final int[] bgColors = getResources().getIntArray(R.array.grey);
 
         final ArrayList<ArcProgressStackView.Model> models = new ArrayList<>();
@@ -109,31 +108,25 @@ public class CocktailActivity extends BaseActivity {
         btnStop.setOnClickListener(view -> CocktailService.stopCocktail(CocktailActivity.this));
 
         mArcProgressStackView.setShadowColor(Color.argb(200, 0, 0, 0));
-//        mArcProgressStackView.setAnimationDuration(1000);
-//        mArcProgressStackView.setSweepAngle(270);
-
     }
 
     private void registerBroadcastReceiver() {
         cocktailUpdateBroadcastReceiver = new CocktailUpdateBroadcastReceiver(new OnUpdateListener() {
             @Override
             public void onItemUpdate(long gpioId, int progress) {
-                Log.d(TAG, "onItemUpdate: gpioId" + gpioId + " progress=" + progress);
                 setValue(gpioId, progress);
             }
 
             @Override
-            public void onItemFinish(long gpioId) {
-                Log.d(TAG, "onItemFinish: " + gpioId);
-                calculateFinish(gpioId);
+            public void onItemFinish() {
+                btnStart.setEnabled(true);
+                btnStop.setEnabled(false);
             }
 
             @Override
-            public void onItemStart(long gpioId) {
-                Log.d(TAG, "onItemStart: " + gpioId);
+            public void onItemStart() {
                 btnStart.setEnabled(false);
                 btnStop.setEnabled(true);
-//                setProgressValue(0);
             }
         });
         cocktailBroadcastReceiver = new CocktailBroadcastReceiver(new OnResultListener() {
@@ -187,30 +180,14 @@ public class CocktailActivity extends BaseActivity {
         mArcProgressStackView.postInvalidate();
     }
 
-    private float getTotalProgress() {
+    private int getTotalProgress() {
         int total = 0;
         for (int i = 1; i < modelCount; i++) {
-            if (progressArray.keyAt(i) != TOTAL_POSITION) {
-                if (progressArray.valueAt(i) != null) {
-                    total += progressArray.valueAt(i);
-                }
-
+            if ((progressArray.keyAt(i) != TOTAL_POSITION) && (progressArray.valueAt(i) != null)) {
+                total += progressArray.valueAt(i);
             }
         }
         return total / (modelCount - 1);
-    }
-
-    private void calculateFinish(long gpioId) {
-        cocktailEnd.put(gpioId, true);
-        for (int i = 0; i < cocktailEnd.size(); i++) {
-            long    key   = cocktailEnd.keyAt(i);
-            boolean value = cocktailEnd.get(key);
-            if (!value) {
-                return;
-            }
-        }
-        btnStart.setEnabled(true);
-        btnStop.setEnabled(false);
     }
 
     @Override

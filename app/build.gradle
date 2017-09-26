@@ -64,6 +64,7 @@ dependencies {
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.3'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.3'
+    // todo compile 'com.github.vivchar:RendererRecyclerViewAdapter:+' https://github.com/vivchar/RendererRecyclerViewAdapter https://habrahabr.ru/post/323862/ https://habrahabr.ru/post/337774/
 }
 
 repositories {

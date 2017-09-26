@@ -17,31 +17,40 @@ class CocktailUpdateBroadcastReceiver(private val onUpdateListener: OnUpdateList
 
     override fun onReceive(context: Context, intent: Intent) {
 
-        val gpioId = intent.getLongExtra(CocktailService.BROADCAST_EXTRA_COCKTAIL_ITEM_GPIO_ID, UNKNOWN_VALUE_LONG)
-        val progress = intent.getIntExtra(CocktailService.BROADCAST_EXTRA_COCKTAIL_ITEM_PROGRESS, UNKNOWN_VALUE)
+        val map: HashMap<Long, Int> = intent.getSerializableExtra(
+                CocktailService.BROADCAST_EXTRA_COCKTAIL_ITEM_MAP) as HashMap<Long, Int>
+        print("tt map")
+        var start = true
+        var finish = true
+        map.forEach { gpioId, progress ->
 
-//        if (order == -1) {
-//            throw UnsupportedOperationException("Unknown action")
-//        }
-
-        when (progress) {
-            in 1..99 -> onUpdateListener.onItemUpdate(gpioId, progress)
-            100 -> {
-                onUpdateListener.onItemFinish(gpioId)
-                onUpdateListener.onItemUpdate(gpioId, progress)
+            when (progress) {
+                in 1..99 -> {
+                    onUpdateListener.onItemUpdate(gpioId, progress)
+                    finish = false
+                    start = false
+                }
+                100 -> {
+                    onUpdateListener.onItemUpdate(gpioId, progress)
+                    start = finish
+                }
+                0 -> {
+                    onUpdateListener.onItemUpdate(gpioId, progress)
+                    start = true
+                    finish = false
+                }
+                -1 -> throw UnsupportedOperationException("Unknown action")
+                else -> throw UnsupportedOperationException("Unknown action !!!")
             }
-            0 -> {
-                onUpdateListener.onItemStart(gpioId)
-                onUpdateListener.onItemUpdate(gpioId, progress)
-            }
-            -1 -> throw UnsupportedOperationException("Unknown action")
-            else -> throw UnsupportedOperationException("Unknown action !!!")
         }
-    }
 
-    companion object {
 
-        private val UNKNOWN_VALUE_LONG = -1L
-        private val UNKNOWN_VALUE = -1
+        if (start) {
+            onUpdateListener.onItemStart()
+        }
+
+        if (finish) {
+            onUpdateListener.onItemFinish()
+        }
     }
 }

@@ -18,24 +18,24 @@ import java.util.List;
  * Time: 16:10
  */
 
-public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.ViewHolder> {
+public class SettingsCocktailAdapter extends RecyclerView.Adapter<SettingsCocktailAdapter.SettingsCocktailViewHolder> {
 
     private List<Cocktail> cocktailList;
     private OnItemListener onItemListener;
 
-    public CocktailAdapter(OnItemListener onItemListener) {
+    public SettingsCocktailAdapter(OnItemListener onItemListener) {
         this.onItemListener = onItemListener;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent,
-                                         int viewType) {
-        return new ViewHolder(
+    public SettingsCocktailViewHolder onCreateViewHolder(ViewGroup parent,
+                                                         int viewType) {
+        return new SettingsCocktailViewHolder(
                 LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_cocktail, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(SettingsCocktailViewHolder holder, int position) {
         Cocktail cocktail = cocktailList.get(holder.getAdapterPosition());
         holder.textName.setText(cocktail.getCocktailName());
         holder.btnDelete.setOnClickListener(view -> onItemListener.onDelete(cocktail));
@@ -62,12 +62,12 @@ public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.ViewHo
         void onDelete(Cocktail cocktail);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class SettingsCocktailViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView    textName;
         ImageButton btnDelete;
         Cocktail    cocktail;
 
-        ViewHolder(View v) {
+        SettingsCocktailViewHolder(View v) {
             super(v);
             textName = v.findViewById(R.id.itemName);
             btnDelete = v.findViewById(R.id.btnDelete);

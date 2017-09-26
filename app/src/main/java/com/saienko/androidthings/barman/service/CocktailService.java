@@ -4,15 +4,16 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import com.google.android.things.pio.Gpio;
+import com.google.android.things.pio.PeripheralManagerService;
 import com.saienko.androidthings.barman.Utils;
 import com.saienko.androidthings.barman.db.cocktail.Cocktail;
 import com.saienko.androidthings.barman.db.cocktail.CocktailElement;
 import com.saienko.androidthings.barman.db.motor.Motor;
-import com.google.android.things.pio.Gpio;
-import com.google.android.things.pio.PeripheralManagerService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class CocktailService extends IntentService {
@@ -28,15 +29,17 @@ public class CocktailService extends IntentService {
     private static final String EXTRA_MOTOR      = "EXTRA_MOTOR";
     private static final String EXTRA_MOTOR_LIST = "EXTRA_MOTOR_LIST";
 
-    public static final String BROADCAST_COCKTAIL_PROGRESS            = "BROADCAST_COCKTAIL_PROGRESS";
-    public static final String BROADCAST_EXTRA_COCKTAIL_ITEM_GPIO_ID  = "BROADCAST_EXTRA_COCKTAIL_ITEM_GPIO_ID";
-    public static final String BROADCAST_EXTRA_COCKTAIL_ITEM_PROGRESS = "BROADCAST_EXTRA_COCKTAIL_ITEM_PROGRESS";
+    public static final String BROADCAST_COCKTAIL_PROGRESS = "BROADCAST_COCKTAIL_PROGRESS";
 
-    public static final String BROADCAST_COCKTAIL_STATUS       = "BROADCAST_COCKTAIL_STATUS";
-    public static final String BROADCAST_EXTRA_COCKTAIL_STATUS = "BROADCAST_EXTRA_COCKTAIL_STATUS";
+    public static final String BROADCAST_COCKTAIL_STATUS         = "BROADCAST_COCKTAIL_STATUS";
+    public static final String BROADCAST_EXTRA_COCKTAIL_STATUS   = "BROADCAST_EXTRA_COCKTAIL_STATUS";
+    public static final String BROADCAST_EXTRA_COCKTAIL_ITEM_MAP = "BROADCAST_EXTRA_COCKTAIL_ITEM_MAP";
 
     private static boolean isTaskRun           = false;
     private static boolean taskShouldBeStopped = false;
+
+    private HashMap<Long, Integer> progressMap;
+    private ArrayList<Thread>      threadList;
 
     public CocktailService() {
         super("CocktailService");
@@ -78,8 +81,10 @@ public class CocktailService extends IntentService {
                 final Cocktail cocktail = intent.getParcelableExtra(EXTRA_COCKTAIL);
                 handleActionCocktail(cocktail);
             } else if (ACTION_COCKTAIL_CANCEL.equals(action)) {
+                Log.d(TAG, "onHandleIntent: cancel");
                 sendCocktailStatus(CocktailStatus.CANCEL);
                 stopTask();
+                Thread.currentThread().interrupt();
                 stopSelf();
             } else if (ACTION_MOTOR_TEST.equals(action)) {
                 motorTest(intent.getParcelableExtra(EXTRA_MOTOR));
@@ -96,30 +101,32 @@ public class CocktailService extends IntentService {
         if (isTaskRun) {
             taskShouldBeStopped = true;
         }
+
+        if (threadList != null) {
+            for (Thread thread : threadList) {
+                thread.interrupt();
+            }
+        }
     }
 
     private void handleActionCocktail(Cocktail cocktail) {
         taskShouldBeStopped = false;
-        Thread thread = new Thread(() -> {
-            isTaskRun = true;
-            for (CocktailElement cocktailElement : cocktail.getCocktailElements()) {
-                if (Utils.isThingsDevice(this)) {
-                    pour(cocktailElement.getPosition().getMotor(), cocktailElement.getVolume());
-                } else {
-                    pourDemo(cocktailElement.getPosition().getMotor(), cocktailElement.getVolume());
-                }
-            }
-        });
-        thread.start();
-
+        isTaskRun = true;
+        progressMap = new HashMap<>();
+        threadList = new ArrayList<>();
+        for (CocktailElement cocktailElement : cocktail.getCocktailElements()) {
+            progressMap.put(cocktailElement.getPosition().getMotor().getGpioId(), 0);
+            pour(cocktailElement.getPosition().getMotor(), cocktailElement.getVolume());
+        }
     }
 
     private void sendCocktailItemProgress(long gpioId, int progress) {
+        progressMap.put(gpioId, progress);
+
         Intent intentUpdate = new Intent();
         intentUpdate.setAction(BROADCAST_COCKTAIL_PROGRESS);
         intentUpdate.addCategory(Intent.CATEGORY_DEFAULT);
-        intentUpdate.putExtra(BROADCAST_EXTRA_COCKTAIL_ITEM_GPIO_ID, gpioId);
-        intentUpdate.putExtra(BROADCAST_EXTRA_COCKTAIL_ITEM_PROGRESS, progress);
+        intentUpdate.putExtra(BROADCAST_EXTRA_COCKTAIL_ITEM_MAP, progressMap);
         sendBroadcast(intentUpdate);
     }
 
@@ -132,32 +139,7 @@ public class CocktailService extends IntentService {
     }
 
     private void motorTest(Motor motor) {
-        Log.d(TAG, "motorTest() called with: motor = [" + motor + "]");
-        PeripheralManagerService pioService = new PeripheralManagerService();
-        Gpio                     mLedGpio   = null;
-        try {
-
-            mLedGpio = pioService.openGpio(motor.getGpio().getGpioName());
-            mLedGpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
-            setLedValue(mLedGpio, true);
-            Thread.sleep(2000);
-            setLedValue(mLedGpio, false);
-
-        } catch (IOException e) {
-            Log.e(TAG, "Error configuring GPIO pins", e);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            Thread.currentThread().interrupt();
-        }
-
-        if (mLedGpio != null) {
-            try {
-                mLedGpio.close();
-            } catch (IOException e) {
-                Log.e(TAG, "Error closing LED GPIO", e);
-            }
-        }
-        Log.d(TAG, "motorTest() returned: ");
+        pour(motor, 100);
     }
 
     private static void setLedValue(Gpio ledGpio, boolean value) {
@@ -176,54 +158,84 @@ public class CocktailService extends IntentService {
         }
     }
 
-    private void pourDemo(Motor motor, int ml) {
-        if (taskShouldBeStopped) {
-            return;
-        }
-        int millis = ml * motor.getMotorSpeed();
-        int step   = millis / 100;
-        for (int i = 0; i < 101; i++) {
+    private void startRealPourThread(int millis, Motor motor) {
+        Thread thread = new Thread(() -> {
+
+            Log.d(TAG, "startRealPourThread: before sleep GPIO" + motor.getGpio());
+
+            long startTime = System.nanoTime();
             try {
-                Thread.sleep(step);
-                if (taskShouldBeStopped) {
-                    break;
-                }
+                Thread.sleep(millis);
             } catch (InterruptedException e) {
-                Log.e(TAG, "pourDemo: ", e);
+                Log.e(TAG, "startRealPourThread: ", e);
                 Thread.currentThread().interrupt();
             }
-            sendCocktailItemProgress(motor.getGpioId(), i);
-        }
+            long endTime  = System.nanoTime();
+            long duration = (endTime - startTime);
+            Log.d(TAG, "startRealPourThread: time " + duration + " GPIO " + motor.getGpio());
+        });
+        threadList.add(thread);
+        thread.start();
+    }
+
+    private void startProgressThread(int step, Motor motor) {
+        Thread thread = new Thread(() -> {
+            Log.d(TAG, "startProgressThread: before sleep GPIO " + motor.getGpio());
+
+            long startTime = System.nanoTime();
+            for (int i = 0; i < 101; i++) {
+                try {
+                    Thread.sleep(step);
+                    if (taskShouldBeStopped) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                } catch (InterruptedException e) {
+                    Log.e(TAG, "pourDemo: ", e);
+                    Thread.currentThread().interrupt();
+                }
+                sendCocktailItemProgress(motor.getGpioId(), i);
+            }
+            long endTime  = System.nanoTime();
+            long duration = (endTime - startTime);
+            Log.d(TAG, "startProgressThread: time " + duration + " GPIO " + motor.getGpio());
+        });
+        thread.start();
     }
 
     private void pour(Motor motor, int ml) {
+        Log.d(TAG, "pour() called with: motor = [" + motor + "], ml = [" + ml + "]");
         if (taskShouldBeStopped) {
             return;
         }
         Log.d(TAG, "pour() called with: motor = [" + motor + "], ml = [" + ml + "]");
-        PeripheralManagerService pioService = new PeripheralManagerService();
-        Gpio                     mLedGpio   = null;
+        PeripheralManagerService pioService = null;
+        if (Utils.isThingsDevice(this)) {
+            pioService = new PeripheralManagerService();
+        }
+        Gpio mLedGpio = null;
+        int  millis   = ml * motor.getMotorSpeed();
+        int  step     = millis / 100;
+
+        Log.d(TAG, "pour: millis = [" + millis + "], step= [" + step + "]");
+
         try {
 
-            mLedGpio = pioService.openGpio(motor.getGpio().getGpioName());
-            mLedGpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
-            setLedValue(mLedGpio, true);
-            int millis = ml * motor.getMotorSpeed();
-            int step   = millis / 100;
-            for (int i = 0; i < 101; i++) {
-                if (taskShouldBeStopped) {
-                    break;
-                }
-                Thread.sleep(step);
-                sendCocktailItemProgress(motor.getGpioId(), i);
+            if (Utils.isThingsDevice(this)) {
+                mLedGpio = pioService.openGpio(motor.getGpio().getGpioName());
+                mLedGpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
+                setLedValue(mLedGpio, true);
             }
-            setLedValue(mLedGpio, false);
+            Log.d(TAG, "pour: start sleep");
+            startProgressThread(step, motor);
+            startRealPourThread(millis, motor);
+
+            if (Utils.isThingsDevice(this)) {
+                setLedValue(mLedGpio, false);
+            }
 
         } catch (IOException e) {
             Log.e(TAG, "Error configuring GPIO pins", e);
-        } catch (InterruptedException e) {
-            Log.e(TAG, "pour: ", e);
-            Thread.currentThread().interrupt();
         }
 
         if (mLedGpio != null) {

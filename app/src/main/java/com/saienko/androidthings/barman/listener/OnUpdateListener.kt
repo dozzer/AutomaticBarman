@@ -11,8 +11,8 @@ interface OnUpdateListener {
 
     fun onItemUpdate(gpioId: Long, progress: Int)
 
-    fun onItemFinish(gpioId: Long)
+    fun onItemFinish()
 
-    fun onItemStart(gpioId: Long)
+    fun onItemStart()
 
 }

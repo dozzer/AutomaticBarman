@@ -17,7 +17,7 @@ import java.util.List;
  * Time: 16:10
  */
 
-public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.ViewHolder> {
+public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.CocktailViewHolder> {
 
     private List<Cocktail> cocktailList;
     private OnItemListener onItemListener;
@@ -27,14 +27,14 @@ public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.ViewHo
     }
 
     @Override
-    public CocktailAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                         int viewType) {
-        return new ViewHolder(
+    public CocktailViewHolder onCreateViewHolder(ViewGroup parent,
+                                                 int viewType) {
+        return new CocktailViewHolder(
                 LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_main_cocktail, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(CocktailAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(CocktailViewHolder holder, int position) {
         Cocktail item = cocktailList.get(position);
         holder.btn.setText(item.getCocktailName());
         holder.cocktail = item;
@@ -61,11 +61,11 @@ public class CocktailAdapter extends RecyclerView.Adapter<CocktailAdapter.ViewHo
         void onStart(Cocktail cocktail);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class CocktailViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         Button   btn;
         Cocktail cocktail;
 
-        ViewHolder(View v) {
+        CocktailViewHolder(View v) {
             super(v);
             btn = v.findViewById(R.id.btnCocktail);
             v.setOnClickListener(this);

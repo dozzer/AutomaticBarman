@@ -21,6 +21,12 @@ import java.util.List;
 
 public class DatabaseUtil {
 
+    // TODO: 9/26/17 migrate to Room converters
+
+    private DatabaseUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+
     @WorkerThread
     public static List<Cocktail> load(List<Cocktail> cocktails) {
         for (Cocktail cocktail : cocktails) {

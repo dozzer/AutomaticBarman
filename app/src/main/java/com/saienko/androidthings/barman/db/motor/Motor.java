@@ -40,7 +40,7 @@ public class Motor implements Parcelable {
         return motorId;
     }
 
-    public void setMotorId(long motorId) {
+    void setMotorId(long motorId) {
         this.motorId = motorId;
     }
 
@@ -97,4 +97,14 @@ public class Motor implements Parcelable {
         @Override
         public Motor[] newArray(int size) {return new Motor[size];}
     };
+
+    @Override
+    public String toString() {
+        return "Motor{" +
+               "motorId=" + motorId +
+               ", motorSpeed=" + motorSpeed +
+               ", gpioId=" + gpioId +
+               ", gpio=" + gpio +
+               '}';
+    }
 }

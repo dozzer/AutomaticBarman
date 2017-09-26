@@ -9,7 +9,7 @@ import com.saienko.androidthings.barman.db.DatabaseUtil;
 import com.saienko.androidthings.barman.db.cocktail.Cocktail;
 import com.saienko.androidthings.barman.ui.base.BaseListActivity;
 import com.saienko.androidthings.barman.ui.dialog.CustomDialog;
-import com.saienko.androidthings.barman.ui.settings.adapter.CocktailAdapter;
+import com.saienko.androidthings.barman.ui.settings.adapter.SettingsCocktailAdapter;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -20,7 +20,7 @@ public class SettingsCocktailsActivity extends BaseListActivity {
     private static final int REG_CODE_ADD_COCKTAIL  = 23;
     private static final int REG_CODE_EDIT_COCKTAIL = 24;
 
-    private CocktailAdapter adapter;
+    private SettingsCocktailAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +84,9 @@ public class SettingsCocktailsActivity extends BaseListActivity {
     }
 
     @Override
-    protected CocktailAdapter getAdapter() {
+    protected SettingsCocktailAdapter getAdapter() {
         if (adapter == null) {
-            adapter = new CocktailAdapter(new CocktailAdapter.OnItemListener() {
+            adapter = new SettingsCocktailAdapter(new SettingsCocktailAdapter.OnItemListener() {
                 @Override
                 public void onItemClick(Cocktail cocktail) {
                     AddCocktailActivity.start(SettingsCocktailsActivity.this, cocktail, REG_CODE_EDIT_COCKTAIL);

@@ -97,13 +97,7 @@ public class SettingsMotorActivity extends BaseListActivity {
     }
 
     private void editMotor(Motor motor) {
-        Single
-                .fromCallable(DatabaseUtil::getFreeGpio)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(gpioList -> AddMotorActivity
-                        .start(SettingsMotorActivity.this, gpioList, motor, REG_CODE_EDIT_MOTOR));
-
+        AddMotorActivity.start(SettingsMotorActivity.this, motor, REG_CODE_EDIT_MOTOR);
     }
 
     private void showDeleteDialog(Motor motor) {
@@ -126,12 +120,7 @@ public class SettingsMotorActivity extends BaseListActivity {
     }
 
     private void showDialogAddMotor() {
-        Single
-                .fromCallable(DatabaseUtil::getFreeGpio)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(gpioList -> AddMotorActivity
-                        .start(SettingsMotorActivity.this, gpioList, REG_CODE_ADD_MOTOR));
+        AddMotorActivity.start(SettingsMotorActivity.this, REG_CODE_ADD_MOTOR);
     }
 
     @Override
@@ -155,8 +144,6 @@ public class SettingsMotorActivity extends BaseListActivity {
         Completable
                 .fromCallable(() -> {
                     AppDatabase.getDb().motorDao().insert(motor);
-//                    Motor newMotor = AppDatabase.getDb().motorDao().getMotorByName(motor.getMotorName());
-//                    AppDatabase.getDb().positionDao().insert(new Position(-1, newMotor.getMotorId()));
                     getMotorList();
                     return null;
                 }).subscribeOn(Schedulers.io())

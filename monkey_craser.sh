@@ -1,0 +1,1 @@
+adb shell monkey -p com.saienko.androidthings.barman -v 50000 -s 999 --pct-touch 20 --pct-motion 40 --pct-nav 60 --pct-majornav 60 --pct-syskeys 0 --pct-appswitch 10

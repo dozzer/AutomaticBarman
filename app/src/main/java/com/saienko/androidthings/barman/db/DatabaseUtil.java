@@ -8,10 +8,6 @@ import com.saienko.androidthings.barman.db.drinkGroup.CocktailGroup;
 import com.saienko.androidthings.barman.db.gpio.Gpio;
 import com.saienko.androidthings.barman.db.motor.Motor;
 import com.saienko.androidthings.barman.db.position.Position;
-import io.reactivex.Completable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
-import io.reactivex.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +93,7 @@ public class DatabaseUtil {
 
     private static boolean isPositionCorrect(Cocktail cocktail) {
         for (CocktailElement cocktailElement : cocktail.getCocktailElements()) {
-            if (cocktailElement.getPosition() == null) {
+            if (cocktailElement.getPosition() == null || cocktailElement.getComponent() == null) {
                 return false;
             }
         }

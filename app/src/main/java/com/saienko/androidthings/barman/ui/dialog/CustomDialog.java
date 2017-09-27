@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import com.saienko.androidthings.barman.R;
+import com.saienko.androidthings.barman.db.cocktail.CocktailElement;
 import com.saienko.androidthings.barman.db.cocktail.Component;
 import com.saienko.androidthings.barman.db.drinkGroup.CocktailGroup;
 
@@ -94,6 +95,57 @@ public class CustomDialog {
         return ad;
     }
 
+    public static void editCocktailElement(Activity activity, CocktailElement cocktailElement,
+                                           final OnAddComponentListener callback) {
+        int            volume   = cocktailElement.getVolume();
+        LayoutInflater inflater = activity.getLayoutInflater();
+
+        AlertDialog.Builder builder    = new AlertDialog.Builder(activity);
+        View                view       = inflater.inflate(R.layout.dialog_edit_component, null);
+        ImageButton         ibMinus    = view.findViewById(R.id.ibMinus);
+        ImageButton         ibPlus     = view.findViewById(R.id.ibPlus);
+        ImageButton         ibMinusTen = view.findViewById(R.id.ibMinusTen);
+        ImageButton         ibPlusTen  = view.findViewById(R.id.ibPlusTen);
+        EditText            etVolume   = view.findViewById(R.id.etVolume);
+        etVolume.setText(String.valueOf(volume));
+        ibMinus.setOnClickListener(view12 -> {
+            int value = Integer.valueOf(etVolume.getText().toString());
+            if (value > 2) {
+                value--;
+                etVolume.setText(String.valueOf(value));
+            }
+        });
+        ibMinusTen.setOnClickListener(view13 -> {
+            int value = Integer.valueOf(etVolume.getText().toString());
+            if (value > 11) {
+                value = volume - 10;
+                etVolume.setText(String.valueOf(value));
+            }
+        });
+
+
+        ibPlus.setOnClickListener(view1 -> {
+            int value = Integer.valueOf(etVolume.getText().toString());
+            value++;
+            etVolume.setText(String.valueOf(value));
+        });
+        ibPlusTen.setOnClickListener(view1 -> {
+            int value = Integer.valueOf(etVolume.getText().toString());
+            value = value + 10;
+            etVolume.setText(String.valueOf(value));
+        });
+
+        builder.setView(view)
+               .setTitle("Edit cocktail Component")
+               .setPositiveButton("Save",
+                                  (dialog, which) -> callback
+                                          .onComponentEdit(cocktailElement,
+                                                           Integer.valueOf(etVolume.getText().toString())))
+               .setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> {})
+               .create();
+        builder.show();
+    }
+
     public static void addNewCocktailElement(Activity activity,
                                              List<Component> list,
                                              final OnAddComponentListener callback) {
@@ -153,7 +205,8 @@ public class CustomDialog {
                .setTitle("Add new cocktail Component")
                .setPositiveButton("Save",
                                   (dialog, which) -> callback
-                                          .onComponentAdded(selectedComponent[0], Integer.valueOf(etVolume.getText().toString())))
+                                          .onComponentAdded(selectedComponent[0],
+                                                            Integer.valueOf(etVolume.getText().toString())))
                .setNegativeButton(android.R.string.cancel, (dialogInterface, i) -> {})
                .create();
         builder.show();

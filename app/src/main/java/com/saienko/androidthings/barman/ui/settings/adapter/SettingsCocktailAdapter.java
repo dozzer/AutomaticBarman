@@ -2,12 +2,10 @@ package com.saienko.androidthings.barman.ui.settings.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import com.saienko.androidthings.barman.R;
 import com.saienko.androidthings.barman.db.cocktail.Cocktail;
+import com.saienko.androidthings.barman.ui.settings.adapter.holder.SettingsCocktailViewHolder;
 
 import java.util.List;
 
@@ -18,7 +16,7 @@ import java.util.List;
  * Time: 16:10
  */
 
-public class SettingsCocktailAdapter extends RecyclerView.Adapter<SettingsCocktailAdapter.SettingsCocktailViewHolder> {
+public class SettingsCocktailAdapter extends RecyclerView.Adapter<SettingsCocktailViewHolder> {
 
     private List<Cocktail> cocktailList;
     private OnItemListener onItemListener;
@@ -30,8 +28,9 @@ public class SettingsCocktailAdapter extends RecyclerView.Adapter<SettingsCockta
     @Override
     public SettingsCocktailViewHolder onCreateViewHolder(ViewGroup parent,
                                                          int viewType) {
-        return new SettingsCocktailViewHolder(
-                LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_cocktail, parent, false));
+        return new SettingsCocktailViewHolder(onItemListener,
+                                              LayoutInflater.from(parent.getContext())
+                                                            .inflate(R.layout.recycler_item_cocktail, parent, false));
     }
 
     @Override
@@ -62,21 +61,4 @@ public class SettingsCocktailAdapter extends RecyclerView.Adapter<SettingsCockta
         void onDelete(Cocktail cocktail);
     }
 
-    class SettingsCocktailViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView    textName;
-        ImageButton btnDelete;
-        Cocktail    cocktail;
-
-        SettingsCocktailViewHolder(View v) {
-            super(v);
-            textName = v.findViewById(R.id.itemName);
-            btnDelete = v.findViewById(R.id.btnDelete);
-            v.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            onItemListener.onItemClick(cocktail);
-        }
-    }
 }

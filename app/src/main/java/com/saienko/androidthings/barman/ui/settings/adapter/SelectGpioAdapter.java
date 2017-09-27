@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.saienko.androidthings.barman.R;
 import com.saienko.androidthings.barman.db.gpio.Gpio;
+import com.saienko.androidthings.barman.ui.settings.adapter.holder.SettingsGpioViewHolder;
 
 import java.util.List;
 
@@ -62,14 +63,10 @@ public class SelectGpioAdapter extends ArrayAdapter<Gpio> {
 
         if (item != null) {
             txtTitle.setText(item.getGpioName());
-            pin.setText(String.format(convertView.getContext().getText(R.string.integer_value).toString(),
+            pin.setText(String.format(getContext().getText(R.string.integer_value).toString(),
                                       item.getGpioPin()));
         }
         return row;
     }
 
-    private class SettingsGpioViewHolder {
-        TextView name;
-        TextView pin;
-    }
 }

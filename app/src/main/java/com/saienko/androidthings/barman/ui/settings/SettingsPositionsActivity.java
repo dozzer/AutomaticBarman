@@ -59,6 +59,7 @@ public class SettingsPositionsActivity extends BaseListActivity {
 
     private void savePosition(Position position) {
         Completable.fromCallable(() -> {
+            // TODO: 9/27/17 adb shell monkey UNIQUE constraint failed: Position.id (code 1555)
             AppDatabase.getDb().positionDao().insert(position);
             getPositionList();
             return null;

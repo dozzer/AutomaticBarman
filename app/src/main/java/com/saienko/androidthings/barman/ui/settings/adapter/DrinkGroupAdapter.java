@@ -2,12 +2,10 @@ package com.saienko.androidthings.barman.ui.settings.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import com.saienko.androidthings.barman.R;
 import com.saienko.androidthings.barman.db.drinkGroup.CocktailGroup;
+import com.saienko.androidthings.barman.ui.settings.adapter.holder.DrinkGroupViewHolder;
 
 import java.util.List;
 
@@ -18,7 +16,7 @@ import java.util.List;
  * Time: 16:10
  */
 
-public class DrinkGroupAdapter extends RecyclerView.Adapter<DrinkGroupAdapter.ViewHolder> {
+public class DrinkGroupAdapter extends RecyclerView.Adapter<DrinkGroupViewHolder> {
 
     private List<CocktailGroup> drinkGroups;
     private OnItemListener      onItemListener;
@@ -28,14 +26,14 @@ public class DrinkGroupAdapter extends RecyclerView.Adapter<DrinkGroupAdapter.Vi
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent,
-                                         int viewType) {
-        return new ViewHolder(
+    public DrinkGroupViewHolder onCreateViewHolder(ViewGroup parent,
+                                                   int viewType) {
+        return new DrinkGroupViewHolder(
                 LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(DrinkGroupViewHolder holder, int position) {
         holder.textName.setText(drinkGroups.get(position).getDrinkGroupName());
         holder.btnEdit.setOnClickListener(view -> onItemListener.onEdit(drinkGroups.get(holder.getAdapterPosition())));
         holder.btnDelete
@@ -61,16 +59,4 @@ public class DrinkGroupAdapter extends RecyclerView.Adapter<DrinkGroupAdapter.Vi
         void onDelete(CocktailGroup drinkGroup);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-        TextView    textName;
-        ImageButton btnEdit;
-        ImageButton btnDelete;
-
-        ViewHolder(View v) {
-            super(v);
-            textName = v.findViewById(R.id.itemName);
-            btnDelete = v.findViewById(R.id.btnDelete);
-            btnEdit = v.findViewById(R.id.btnEdit);
-        }
-    }
 }

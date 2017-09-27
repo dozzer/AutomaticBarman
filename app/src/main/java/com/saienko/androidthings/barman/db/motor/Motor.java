@@ -18,22 +18,32 @@ import com.saienko.androidthings.barman.db.gpio.Gpio;
 @Entity(tableName = "motor")
 public class Motor implements Parcelable {
 
+    public static final Creator<Motor> CREATOR = new Creator<Motor>() {
+        @Override
+        public Motor createFromParcel(Parcel source) {return new Motor(source);}
+
+        @Override
+        public Motor[] newArray(int size) {return new Motor[size];}
+    };
     @PrimaryKey(autoGenerate = true)
     private long motorId;
-
-
     @ColumnInfo
     private int motorSpeed;
-
     @ColumnInfo
     private long gpioId;
-
     @Ignore
     private Gpio gpio;
 
     public Motor(int motorSpeed, long gpioId) {
         this.motorSpeed = motorSpeed;
         this.gpioId = gpioId;
+    }
+
+    protected Motor(Parcel in) {
+        this.motorId = in.readLong();
+        this.motorSpeed = in.readInt();
+        this.gpioId = in.readLong();
+        this.gpio = in.readParcelable(Gpio.class.getClassLoader());
     }
 
     public long getMotorId() {
@@ -45,7 +55,11 @@ public class Motor implements Parcelable {
     }
 
     public String getMotorName() {
-        return gpio.getGpioName() + " " + gpio.getGpioPin();
+        if (gpio == null) {
+            return "unknown";
+        } else {
+            return gpio.getGpioName() + " " + gpio.getGpioPin();
+        }
     }
 
     public int getMotorSpeed() {
@@ -82,21 +96,6 @@ public class Motor implements Parcelable {
         dest.writeLong(this.gpioId);
         dest.writeParcelable(this.gpio, flags);
     }
-
-    protected Motor(Parcel in) {
-        this.motorId = in.readLong();
-        this.motorSpeed = in.readInt();
-        this.gpioId = in.readLong();
-        this.gpio = in.readParcelable(Gpio.class.getClassLoader());
-    }
-
-    public static final Creator<Motor> CREATOR = new Creator<Motor>() {
-        @Override
-        public Motor createFromParcel(Parcel source) {return new Motor(source);}
-
-        @Override
-        public Motor[] newArray(int size) {return new Motor[size];}
-    };
 
     @Override
     public String toString() {

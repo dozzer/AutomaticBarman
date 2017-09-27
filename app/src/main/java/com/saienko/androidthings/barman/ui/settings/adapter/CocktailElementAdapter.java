@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.saienko.androidthings.barman.R;
 import com.saienko.androidthings.barman.db.cocktail.CocktailElement;
+import com.saienko.androidthings.barman.ui.settings.adapter.holder.CocktailElementViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,18 +29,24 @@ public class CocktailElementAdapter extends RecyclerView.Adapter<CocktailElement
     @Override
     public CocktailElementViewHolder onCreateViewHolder(ViewGroup parent,
                                                         int viewType) {
-        return new CocktailElementViewHolder(
-                LayoutInflater.from(parent.getContext())
-                              .inflate(R.layout.recycler_item_cocktail_element, parent, false));
+        return new CocktailElementViewHolder(onItemListener,
+                                             LayoutInflater.from(parent.getContext())
+                                                           .inflate(R.layout.recycler_item_cocktail_element, parent,
+                                                                    false));
     }
 
     @Override
     public void onBindViewHolder(CocktailElementViewHolder holder, int position) {
         CocktailElement item = cocktailElements.get(holder.getAdapterPosition());
-        holder.textName.setText(item.getComponent().getName());
+        if (item.getComponent() != null) {
+            holder.textName.setText(item.getComponent().getName());
+        } else {
+            holder.textName.setText("This item was deleted");
+        }
         holder.textVolume.setText(String.valueOf(item.getVolume()));
         holder.btnDelete
                 .setOnClickListener(view -> onItemListener.onDelete(item));
+        holder.cocktailElement = item;
     }
 
     @Override
@@ -49,11 +56,6 @@ public class CocktailElementAdapter extends RecyclerView.Adapter<CocktailElement
         }
         return cocktailElements.size();
     }
-
-//    public void addItems(ArrayList<CocktailElement> cocktailElements) {
-//        this.cocktailElements = cocktailElements;
-//        notifyDataSetChanged();
-//    }
 
     public void add(CocktailElement component) {
         if (cocktailElements == null) {
@@ -78,7 +80,19 @@ public class CocktailElementAdapter extends RecyclerView.Adapter<CocktailElement
         }
     }
 
+    public void update(CocktailElement cocktailElement) {
+        for (CocktailElement element : cocktailElements) {
+            if (element.getId() == cocktailElement.getId()) {
+                element.setVolume(cocktailElement.getVolume());
+                break;
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     public interface OnItemListener {
         void onDelete(CocktailElement cocktailElement);
+
+        void onEdit(CocktailElement cocktailElement);
     }
 }

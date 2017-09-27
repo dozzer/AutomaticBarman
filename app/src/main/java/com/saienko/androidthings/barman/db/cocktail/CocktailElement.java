@@ -22,27 +22,38 @@ import com.saienko.androidthings.barman.db.position.Position;
 //        ))
 public class CocktailElement implements Parcelable {
 
+    public static final Creator<CocktailElement> CREATOR = new Creator<CocktailElement>() {
+        @Override
+        public CocktailElement createFromParcel(Parcel source) {return new CocktailElement(source);}
+
+        @Override
+        public CocktailElement[] newArray(int size) {return new CocktailElement[size];}
+    };
     @PrimaryKey(autoGenerate = true)
-    long id;
-
+    private         long      id;
     @ColumnInfo(name = "cocktail_element_component_id")
-    public long componentId;
-
+    private         long      componentId;
     @ColumnInfo(name = "cocktail_element_volume")
-    public int volume;
-
+    private         int       volume;
     @ColumnInfo(name = "cocktailId")
-    public long cocktailId;
-
+    private         long      cocktailId;
     @Ignore
-    Component component;
-
-    @Ignore Position position;
+    private         Component component;
+    @Ignore private Position  position;
 
     public CocktailElement(long componentId, int volume, long cocktailId) {
         this.componentId = componentId;
         this.volume = volume;
         this.cocktailId = cocktailId;
+    }
+
+    protected CocktailElement(Parcel in) {
+        this.id = in.readLong();
+        this.componentId = in.readLong();
+        this.volume = in.readInt();
+        this.cocktailId = in.readLong();
+        this.component = in.readParcelable(Component.class.getClassLoader());
+        this.position = in.readParcelable(Position.class.getClassLoader());
     }
 
     public long getId() {
@@ -105,21 +116,4 @@ public class CocktailElement implements Parcelable {
         dest.writeParcelable(this.component, flags);
         dest.writeParcelable(this.position, flags);
     }
-
-    protected CocktailElement(Parcel in) {
-        this.id = in.readLong();
-        this.componentId = in.readLong();
-        this.volume = in.readInt();
-        this.cocktailId = in.readLong();
-        this.component = in.readParcelable(Component.class.getClassLoader());
-        this.position = in.readParcelable(Position.class.getClassLoader());
-    }
-
-    public static final Creator<CocktailElement> CREATOR = new Creator<CocktailElement>() {
-        @Override
-        public CocktailElement createFromParcel(Parcel source) {return new CocktailElement(source);}
-
-        @Override
-        public CocktailElement[] newArray(int size) {return new CocktailElement[size];}
-    };
 }

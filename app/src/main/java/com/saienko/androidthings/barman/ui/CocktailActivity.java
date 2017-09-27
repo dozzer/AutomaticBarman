@@ -41,6 +41,12 @@ public class CocktailActivity extends BaseActivity {
     private ArcProgressStackView mArcProgressStackView;
     private int                  modelCount;
 
+    public static void start(Context context, Cocktail cocktail) {
+        Intent intent = new Intent(context, CocktailActivity.class);
+        intent.putExtra(EXTRA_COCKTAIL, cocktail);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +61,6 @@ public class CocktailActivity extends BaseActivity {
 
     private void handleIntent() {
         cocktail = getIntent().getParcelableExtra(EXTRA_COCKTAIL);
-    }
-
-    public static void start(Context context, Cocktail cocktail) {
-        Intent intent = new Intent(context, CocktailActivity.class);
-        intent.putExtra(EXTRA_COCKTAIL, cocktail);
-        context.startActivity(intent);
     }
 
     @Override
@@ -167,17 +167,19 @@ public class CocktailActivity extends BaseActivity {
 
     private void setValue(long gpioId, int progress) {
         ArcProgressStackView.Model model = holderMap.get(gpioId);
-        if ((int) model.getProgress() != progress) {
-            model.setProgress(progress);
-        }
-        progressArray.put(gpioId, progress);
+        if (model == null) {
+            if ((int) model.getProgress() != progress) {
+                model.setProgress(progress);
+            }
+            progressArray.put(gpioId, progress);
 
-        ArcProgressStackView.Model totalModel    = holderMap.get(TOTAL_POSITION);
-        float                      totalProgress = getTotalProgress();
-        if (totalModel.getProgress() != totalProgress) {
-            totalModel.setProgress(totalProgress);
+            ArcProgressStackView.Model totalModel    = holderMap.get(TOTAL_POSITION);
+            float                      totalProgress = getTotalProgress();
+            if (totalModel.getProgress() != totalProgress) {
+                totalModel.setProgress(totalProgress);
+            }
+            mArcProgressStackView.postInvalidate();
         }
-        mArcProgressStackView.postInvalidate();
     }
 
     private int getTotalProgress() {

@@ -15,6 +15,7 @@ import com.saienko.androidthings.barman.db.cocktail.Component;
 import com.saienko.androidthings.barman.db.drinkGroup.CocktailGroup;
 import com.saienko.androidthings.barman.ui.base.BaseActivity;
 import com.saienko.androidthings.barman.ui.dialog.CustomDialog;
+import com.saienko.androidthings.barman.ui.dialog.OnAddComponentListener;
 import com.saienko.androidthings.barman.ui.settings.adapter.CocktailElementAdapter;
 import com.saienko.androidthings.barman.ui.settings.adapter.SelectGroupAdapter;
 import io.reactivex.Single;
@@ -25,16 +26,29 @@ import java.util.List;
 
 public class AddCocktailActivity extends BaseActivity {
 
-    private static final String EXTRA_COCKTAIL        = "EXTRA_COCKTAIL";
     public static final  String EXTRA_COCKTAIL_NEW    = "EXTRA_COCKTAIL_NEW";
     public static final  String EXTRA_COCKTAIL_UPDATE = "EXTRA_COCKTAIL_UPDATE";
-
+    private static final String EXTRA_COCKTAIL        = "EXTRA_COCKTAIL";
     private boolean                isNewCocktail;
     private Cocktail               cocktail;
     private CocktailElementAdapter adapter;
     private List<CocktailGroup>    cocktails;
     private CocktailGroup          selectedGroup;
     private ImageButton            ibAdd;
+    private OnAddComponentListener callback = new OnAddComponentListener() {
+        @Override
+        public void onComponentAdded(Component component, int volume) {
+            setAddButtonVisibility();
+            addComponent(component, volume);
+        }
+
+        @Override
+        public void onComponentEdit(CocktailElement cocktailElement, int volume) {
+            setAddButtonVisibility();
+            cocktailElement.setVolume(volume);
+            editComponent(cocktailElement);
+        }
+    };
 
     public static void start(BaseActivity activity, int regCode) {
         Intent intent = new Intent(activity, AddCocktailActivity.class);
@@ -161,17 +175,22 @@ public class AddCocktailActivity extends BaseActivity {
     private long[] getExistComponentIds() {
         long[] componentIds = new long[getAdapter().getItemCount()];
         for (int i = 0; i < getAdapter().getItemCount(); i++) {
-            componentIds[i] = getAdapter().getItems().get(i).getComponent().getId();
+            if (getAdapter().getItems().get(i).getComponent() != null) {
+                componentIds[i] = getAdapter().getItems().get(i).getComponent().getId();
+            } else {
+                componentIds[i] = -1;
+            }
         }
         return componentIds;
     }
 
-    private void openAddComponentDialog(
-            List<Component> components) {
-        CustomDialog.addNewCocktailElement(this, components, (component, volume) -> {
-            setAddButtonVisibility();
-            addComponent(component, volume);
-        });
+    private void openAddComponentDialog(List<Component> components) {
+        CustomDialog.addNewCocktailElement(this, components, callback);
+    }
+
+
+    private void editComponent(CocktailElement cocktailElement) {
+        getAdapter().update(cocktailElement);
     }
 
     private void addComponent(Component component, int volume) {
@@ -182,16 +201,26 @@ public class AddCocktailActivity extends BaseActivity {
 
     CocktailElementAdapter getAdapter() {
         if (adapter == null) {
-            adapter = new CocktailElementAdapter(cocktailElement -> new CocktailElementAdapter.OnItemListener() {
+            adapter = new CocktailElementAdapter(new CocktailElementAdapter.OnItemListener() {
                 @Override
                 public void onDelete(CocktailElement cocktailElement) {
                     getAdapter().delete(cocktailElement);
                     setAddButtonVisibility();
                 }
+
+                @Override
+                public void onEdit(CocktailElement cocktailElement) {
+                    openEditComponentDialog(cocktailElement);
+                }
             });
         }
         return adapter;
     }
+
+    private void openEditComponentDialog(CocktailElement cocktailElement) {
+        CustomDialog.editCocktailElement(this, cocktailElement, callback);
+    }
+
 
     private int getPosition(List<CocktailGroup> groupList, long groupId) {
         for (int i = 0; i < groupList.size(); i++) {

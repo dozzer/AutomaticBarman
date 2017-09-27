@@ -1,5 +1,6 @@
 package com.saienko.androidthings.barman.ui.dialog;
 
+import com.saienko.androidthings.barman.db.cocktail.CocktailElement;
 import com.saienko.androidthings.barman.db.cocktail.Component;
 
 /**
@@ -11,4 +12,6 @@ import com.saienko.androidthings.barman.db.cocktail.Component;
 
 public interface OnAddComponentListener {
     void onComponentAdded(Component component, int volume);
+
+    void onComponentEdit(CocktailElement cocktailElement, int volume);
 }

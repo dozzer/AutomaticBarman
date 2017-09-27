@@ -18,23 +18,18 @@ import java.util.List;
 
 public class CocktailService extends IntentService {
 
-    private static final String TAG = "CocktailService";
-
-    private static final String ACTION_COCKTAIL_CREATE = "ACTION_COCKTAIL_CREATE";
-    private static final String ACTION_COCKTAIL_CANCEL = "ACTION_COCKTAIL_CANCEL";
-    private static final String ACTION_MOTOR_TEST      = "ACTION_MOTOR_TEST";
-    private static final String ACTION_MOTOR_CLEAR     = "ACTION_MOTOR_CLEAR";
-
-    private static final String EXTRA_COCKTAIL   = "EXTRA_COCKTAIL";
-    private static final String EXTRA_MOTOR      = "EXTRA_MOTOR";
+    public static final  String BROADCAST_COCKTAIL_PROGRESS       = "BROADCAST_COCKTAIL_PROGRESS";
+    public static final  String BROADCAST_COCKTAIL_STATUS         = "BROADCAST_COCKTAIL_STATUS";
+    public static final  String BROADCAST_EXTRA_COCKTAIL_STATUS   = "BROADCAST_EXTRA_COCKTAIL_STATUS";
+    public static final  String BROADCAST_EXTRA_COCKTAIL_ITEM_MAP = "BROADCAST_EXTRA_COCKTAIL_ITEM_MAP";
+    private static final String TAG                               = "CocktailService";
+    private static final String ACTION_COCKTAIL_CREATE            = "ACTION_COCKTAIL_CREATE";
+    private static final String ACTION_COCKTAIL_CANCEL            = "ACTION_COCKTAIL_CANCEL";
+    private static final String ACTION_MOTOR_TEST                 = "ACTION_MOTOR_TEST";
+    private static final String ACTION_MOTOR_CLEAR                = "ACTION_MOTOR_CLEAR";
+    private static final String EXTRA_COCKTAIL                    = "EXTRA_COCKTAIL";
+    private static final String EXTRA_MOTOR                       = "EXTRA_MOTOR";
     private static final String EXTRA_MOTOR_LIST = "EXTRA_MOTOR_LIST";
-
-    public static final String BROADCAST_COCKTAIL_PROGRESS = "BROADCAST_COCKTAIL_PROGRESS";
-
-    public static final String BROADCAST_COCKTAIL_STATUS         = "BROADCAST_COCKTAIL_STATUS";
-    public static final String BROADCAST_EXTRA_COCKTAIL_STATUS   = "BROADCAST_EXTRA_COCKTAIL_STATUS";
-    public static final String BROADCAST_EXTRA_COCKTAIL_ITEM_MAP = "BROADCAST_EXTRA_COCKTAIL_ITEM_MAP";
-
     private static boolean isTaskRun           = false;
     private static boolean taskShouldBeStopped = false;
 
@@ -71,6 +66,14 @@ public class CocktailService extends IntentService {
         intent.setAction(ACTION_MOTOR_CLEAR);
         intent.putParcelableArrayListExtra(EXTRA_MOTOR_LIST, (ArrayList<Motor>) motorList);
         context.startService(intent);
+    }
+
+    private static void setLedValue(Gpio ledGpio, boolean value) {
+        try {
+            ledGpio.setValue(value);
+        } catch (IOException e) {
+            Log.e(TAG, "Error updating GPIO value", e);
+        }
     }
 
     @Override
@@ -112,16 +115,21 @@ public class CocktailService extends IntentService {
     private void handleActionCocktail(Cocktail cocktail) {
         taskShouldBeStopped = false;
         isTaskRun = true;
-        progressMap = new HashMap<>();
-        threadList = new ArrayList<>();
         for (CocktailElement cocktailElement : cocktail.getCocktailElements()) {
-            progressMap.put(cocktailElement.getPosition().getMotor().getGpioId(), 0);
+            putToMap(cocktailElement.getPosition().getMotor().getGpioId(), 0);
             pour(cocktailElement.getPosition().getMotor(), cocktailElement.getVolume());
         }
     }
 
-    private void sendCocktailItemProgress(long gpioId, int progress) {
+    private void putToMap(long gpioId, int progress) {
+        if (progressMap == null) {
+            progressMap = new HashMap<>();
+        }
         progressMap.put(gpioId, progress);
+    }
+
+    private void sendCocktailItemProgress(long gpioId, int progress) {
+        putToMap(gpioId, progress);
 
         Intent intentUpdate = new Intent();
         intentUpdate.setAction(BROADCAST_COCKTAIL_PROGRESS);
@@ -140,14 +148,6 @@ public class CocktailService extends IntentService {
 
     private void motorTest(Motor motor) {
         pour(motor, 100);
-    }
-
-    private static void setLedValue(Gpio ledGpio, boolean value) {
-        try {
-            ledGpio.setValue(value);
-        } catch (IOException e) {
-            Log.e(TAG, "Error updating GPIO value", e);
-        }
     }
 
     private void clear(List<Motor> motorList) {
@@ -174,6 +174,9 @@ public class CocktailService extends IntentService {
             long duration = (endTime - startTime);
             Log.d(TAG, "startRealPourThread: time " + duration + " GPIO " + motor.getGpio());
         });
+        if (threadList == null) {
+            threadList = new ArrayList<>();
+        }
         threadList.add(thread);
         thread.start();
     }

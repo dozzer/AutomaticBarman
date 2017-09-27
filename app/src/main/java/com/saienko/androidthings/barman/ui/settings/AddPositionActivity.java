@@ -24,9 +24,8 @@ import java.util.List;
 
 public class AddPositionActivity extends BaseActivity {
 
-    private static final String TAG = "AddPositionActivity";
-
     public static final  String EXTRA_POSITION = "EXTRA_POSITION";
+    private static final String TAG            = "AddPositionActivity";
     private static final String EXTRA_EDIT     = "EXTRA_EDIT";
     private Position                 position;
     private List<Component>          componentList;
@@ -36,17 +35,6 @@ public class AddPositionActivity extends BaseActivity {
     private PeripheralManagerService pioService;
     private Gpio                     mLedGpio;
     private SelectComponentAdapter   adapter;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_position);
-        handleIntent();
-        initUI();
-        if (Utils.isThingsDevice(this)) {
-            pioService = new PeripheralManagerService();
-        }
-    }
 
     public static void add(BaseActivity activity, Position position, int regCode) {
         Intent intent = new Intent(activity, AddPositionActivity.class);
@@ -59,6 +47,17 @@ public class AddPositionActivity extends BaseActivity {
         intent.putExtra(EXTRA_POSITION, position);
         intent.putExtra(EXTRA_EDIT, true);
         activity.startActivityForResult(intent, regCode);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_position);
+        handleIntent();
+        initUI();
+        if (Utils.isThingsDevice(this)) {
+            pioService = new PeripheralManagerService();
+        }
     }
 
     private void handleIntent() {
@@ -96,6 +95,9 @@ public class AddPositionActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedComponent = componentList.get(i);
+                if (selectedComponent != null) {
+                    btnSave.setEnabled(true);
+                }
             }
 
             @Override
@@ -116,6 +118,7 @@ public class AddPositionActivity extends BaseActivity {
                       componentList = components;
                       spinnerComponent.setAdapter(getAdapter());
                   });
+            btnSave.setEnabled(false);
         } else {
             Single.fromCallable(DatabaseUtil::getComponents).subscribeOn(Schedulers.io())
                   .observeOn(AndroidSchedulers.mainThread())

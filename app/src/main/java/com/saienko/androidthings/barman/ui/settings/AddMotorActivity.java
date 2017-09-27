@@ -29,9 +29,11 @@ public class AddMotorActivity extends BaseActivity {
     private Gpio       selectedGpio;
     private Motor      motor;
     private boolean    isNewMotor;
-    private Spinner spinnerGpio;
-    private TextView tvName;
-    private EditText etSpeed;
+    private Spinner    spinnerGpio;
+    private TextView   tvName;
+    private EditText   etSpeed;
+    private Button     btnSave;
+    private Button     btnTest;
 
     public static void start(BaseActivity activity, int regCode) {
         Intent intent = new Intent(activity, AddMotorActivity.class);
@@ -81,16 +83,17 @@ public class AddMotorActivity extends BaseActivity {
         spinnerGpio = findViewById(R.id.spinnerGpio);
         tvName = findViewById(R.id.tvName);
         etSpeed = findViewById(R.id.etSpeed);
-        Button      btnSave = findViewById(R.id.btnSave);
-        ImageButton minus   = findViewById(R.id.minus);
-        ImageButton plus    = findViewById(R.id.plus);
-        Button      btnTest = findViewById(R.id.btnTest);
+        btnSave = findViewById(R.id.btnSave);
+        ImageButton minus = findViewById(R.id.minus);
+        ImageButton plus  = findViewById(R.id.plus);
+        btnTest = findViewById(R.id.btnTest);
         ImageButton imgInfo = findViewById(R.id.imgInfo);
 
         spinnerGpio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedGpio = gpioList.get(i);
+                showButtons(true);
             }
 
             @Override
@@ -157,13 +160,21 @@ public class AddMotorActivity extends BaseActivity {
             }
         });
         imgInfo.setOnClickListener(view -> InfoActivity.start(view.getContext()));
+        showButtons(false);
+    }
+
+    private void showButtons(boolean show) {
+        btnTest.setEnabled(show);
+        btnSave.setEnabled(show);
     }
 
     private void initData() {
         spinnerGpio.setAdapter(new SelectGpioAdapter(this, gpioList));
         if (!isNewMotor) {
             etSpeed.setText(String.valueOf(motor.getMotorSpeed()));
-            spinnerGpio.setSelection(getPosition(gpioList, motor.getGpio().getGpioPin()));
+            if (motor.getGpio() != null) {
+                spinnerGpio.setSelection(getPosition(gpioList, motor.getGpio().getGpioPin()));
+            }
             tvName.setText(motor.getMotorName());
         } else {
             tvName.setText("");

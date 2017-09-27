@@ -166,8 +166,10 @@ public class SettingsMotorActivity extends BaseListActivity {
     private void updatePosition(Motor motor) {
         Completable.fromCallable(() -> {
             Position position = AppDatabase.getDb().positionDao().getByMotorId(motor.getMotorId());
-            position.setMotorId(motor.getMotorId());
-            AppDatabase.getDb().positionDao().update(position);
+            if (position != null) {
+                position.setMotorId(motor.getMotorId());
+                AppDatabase.getDb().positionDao().update(position);
+            }
             return null;
         }).subscribeOn(Schedulers.io())
                    .observeOn(AndroidSchedulers.mainThread())

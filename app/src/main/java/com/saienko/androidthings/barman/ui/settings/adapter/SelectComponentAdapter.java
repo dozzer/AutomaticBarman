@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.saienko.androidthings.barman.R;
 import com.saienko.androidthings.barman.db.cocktail.Component;
+import com.saienko.androidthings.barman.ui.settings.adapter.holder.SpinnerComponentViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,16 +31,16 @@ public class SelectComponentAdapter extends ArrayAdapter<Component> {
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        ViewHolder holder;
-        Component  item = getItem(position);
+        SpinnerComponentViewHolder holder;
+        Component                  item = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item_gpio, parent, false);
-            holder = new ViewHolder();
+            holder = new SpinnerComponentViewHolder();
             holder.name = convertView.findViewById(R.id.motorName);
             convertView.setTag(holder);
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            holder = (SpinnerComponentViewHolder) convertView.getTag();
         }
 
         holder.name.setText(item.getName());
@@ -66,7 +67,4 @@ public class SelectComponentAdapter extends ArrayAdapter<Component> {
         return list;
     }
 
-    private class ViewHolder {
-        TextView name;
-    }
 }

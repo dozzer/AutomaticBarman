@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.saienko.androidthings.barman.R;
 import com.saienko.androidthings.barman.db.drinkGroup.CocktailGroup;
+import com.saienko.androidthings.barman.ui.settings.adapter.holder.SpinnerGroupViewHolder;
 
 import java.util.List;
 
@@ -29,16 +30,16 @@ public class SelectGroupAdapter extends ArrayAdapter<CocktailGroup> {
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        ViewHolder    holder;
-        CocktailGroup item = getItem(position);
+        SpinnerGroupViewHolder holder;
+        CocktailGroup          item = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spinner_item_gpio, parent, false);
-            holder = new ViewHolder();
+            holder = new SpinnerGroupViewHolder();
             holder.name = convertView.findViewById(R.id.motorName);
             convertView.setTag(holder);
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            holder = (SpinnerGroupViewHolder) convertView.getTag();
         }
 
         holder.name.setText(item.getDrinkGroupName());
@@ -57,7 +58,4 @@ public class SelectGroupAdapter extends ArrayAdapter<CocktailGroup> {
         return row;
     }
 
-    private class ViewHolder {
-        TextView name;
-    }
 }

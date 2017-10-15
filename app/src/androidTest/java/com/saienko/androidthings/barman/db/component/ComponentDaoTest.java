@@ -1,6 +1,7 @@
 package com.saienko.androidthings.barman.db.component;
 
 import android.arch.persistence.room.Room;
+import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
 import com.saienko.androidthings.barman.db.AppDatabase;
 import org.junit.After;
@@ -51,7 +52,7 @@ public class ComponentDaoTest {
     @Test
     public void insert() throws Exception {
         ComponentDao componentDao = mDatabase.componentDao();
-        componentDao.insert(new Component("component1"));
+        componentDao.insert(getComponent());
 
         checkCount(1);
         componentDao.insert(new Component("component2"));
@@ -65,7 +66,7 @@ public class ComponentDaoTest {
     @Test
     public void delete() throws Exception {
         ComponentDao componentDao = mDatabase.componentDao();
-        long         id           = componentDao.insert(new Component("component1"));
+        long         id           = componentDao.insert(getComponent());
         componentDao.delete(id);
         checkCount(0);
     }
@@ -80,12 +81,21 @@ public class ComponentDaoTest {
 
     @Test
     public void update() throws Exception {
+        ComponentDao componentDao = mDatabase.componentDao();
+        long         id           = componentDao.insert(getComponent());
+        Component    component    = componentDao.getById(id).blockingGet();
+        component.setName("bla-bla");
+        componentDao.update(component);
+
+        Component component1 = componentDao.getById(id).blockingGet();
+        assertEquals("bla-bla", component1.getName());
+
     }
 
     @Test
     public void getById() throws Exception {
         ComponentDao componentDao = mDatabase.componentDao();
-        componentDao.insert(new Component("component1"));
+        componentDao.insert(getComponent());
 
         Component component = componentDao.getById(1).blockingGet();
         assertNotNull(component);
@@ -98,7 +108,7 @@ public class ComponentDaoTest {
     }
 
     private void createThreeItems(ComponentDao componentDao) {
-        componentDao.insert(new Component("component1"));
+        componentDao.insert(getComponent());
         componentDao.insert(new Component("component2"));
         componentDao.insert(new Component("component3"));
     }
@@ -107,5 +117,10 @@ public class ComponentDaoTest {
         ComponentDao    componentDao = mDatabase.componentDao();
         List<Component> tags         = componentDao.getAll().blockingGet();
         assertEquals(tags.size(), count);
+    }
+
+    @NonNull
+    private Component getComponent() {
+        return new Component("component1");
     }
 }

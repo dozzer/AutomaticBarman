@@ -20,4 +20,5 @@
         app:backgroundTint="@color/colorAccent"
         app:layout_anchor="@id/list"
         app:layout_anchorGravity="bottom|right|end" />
+
 </android.support.design.widget.CoordinatorLayout>

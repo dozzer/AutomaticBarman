@@ -19,7 +19,6 @@ class CocktailUpdateBroadcastReceiver(private val onUpdateListener: OnUpdateList
 
         val map: HashMap<Long, Int> = intent.getSerializableExtra(
                 CocktailService.BROADCAST_EXTRA_COCKTAIL_ITEM_MAP) as HashMap<Long, Int>
-        print("tt map")
         var start = true
         var finish = true
         map.forEach { gpioId, progress ->

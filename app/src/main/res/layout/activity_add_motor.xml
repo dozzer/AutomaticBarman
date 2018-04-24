@@ -1,133 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_toStartOf="@+id/imageView"
-    tools:context="com.saienko.androidthings.barman.ui.settings.AddMotorActivity">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="0dp"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="@string/save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:minHeight="400dp"
+        tools:context="com.saienko.androidthings.barman.ui.settings.AddMotorActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        style="@style/TextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/motor_name"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvName"
-        app:layout_constraintStart_toStartOf="parent" />
+        <LinearLayout
+            android:layout_margin="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView2"
-        style="@style/TextView"
-        android:layout_width="85dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/gpio"
-        app:layout_constraintBottom_toBottomOf="@+id/spinnerGpio"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/spinnerGpio" />
+            <LinearLayout
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvName"
-        style="@style/EditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:text="@string/name"
-        app:layout_constraintEnd_toEndOf="@+id/btnTest"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/textView"
+                    style="@style/TextView"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/motor_name" />
 
-    <Spinner
-        android:id="@+id/spinnerGpio"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="@+id/tvName"
-        app:layout_constraintTop_toBottomOf="@+id/tvName" />
+                <TextView
+                    android:id="@+id/tvName"
+                    style="@style/EditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView3"
-        style="@style/TextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="@string/speed"
-        app:layout_constraintBaseline_toBaselineOf="@+id/etSpeed"
-        app:layout_constraintEnd_toStartOf="@+id/minus"
-        app:layout_constraintStart_toStartOf="parent" />
+            <LinearLayout
+                android:layout_marginTop="24dp"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/etSpeed"
-        style="@style/EditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:enabled="false"
-        android:inputType="numberSigned"
-        android:text="100"
-        app:layout_constraintEnd_toStartOf="@+id/plus"
-        app:layout_constraintStart_toEndOf="@+id/minus"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerGpio" />
+                <TextView
+                    android:id="@+id/textView2"
+                    style="@style/TextView"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gpio"
+                    app:layout_constraintBottom_toBottomOf="@+id/spinnerGpio"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/spinnerGpio" />
 
-    <ImageButton
-        android:id="@+id/minus"
-        style="@style/square_small_button"
-        android:src="@drawable/ic_minus"
-        app:layout_constraintStart_toStartOf="@+id/spinnerGpio"
-        app:layout_constraintTop_toTopOf="@+id/etSpeed" />
+                <Spinner
+                    android:id="@+id/spinnerGpio"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-    <ImageButton
-        android:id="@+id/plus"
-        style="@style/square_small_button"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_plus"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/etSpeed" />
+            </LinearLayout>
 
-    <Button
-        android:id="@+id/btnTest"
-        style="@style/square_button"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/test"
-        app:layout_constraintBottom_toTopOf="@+id/btnSave"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+            <LinearLayout
+                android:layout_margin="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <ImageButton
-        android:id="@+id/imgInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnSave"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_info" />
+                <TextView
+                    android:id="@+id/textView3"
+                    style="@style/TextView"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_width="120dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/speed" />
 
-</android.support.constraint.ConstraintLayout>
+                <!--`<ImageButton-->
+                <!--android:id="@+id/minus"-->
+                <!--style="@style/square_small_button"-->
+                <!--android:contentDescription="@string/minus"-->
+                <!--android:src="@drawable/ic_minus" />-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/etSpeed"-->
+                <!--style="@style/EditText"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_width="60dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:ems="10"-->
+                <!--android:enabled="false"-->
+                <!--android:text="100" />-->
+
+                <!--<ImageButton-->
+                <!--android:id="@+id/plus"-->
+                <!--style="@style/square_small_button"-->
+                <!--android:contentDescription="@string/plus"-->
+                <!--android:src="@drawable/ic_plus" />-->
+                <include layout="@layout/view_enter_value" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_margin="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextView"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/component" />
+
+                <TextView
+                    android:id="@+id/tvComponent"
+                    style="@style/EditText"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/component" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btnTest"
+            style="@style/square_button"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/test"
+            app:layout_constraintBottom_toTopOf="@+id/btnSave"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imgInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/test"
+            app:layout_constraintBottom_toTopOf="@+id/btnSave"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_info" />
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

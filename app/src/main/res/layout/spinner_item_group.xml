@@ -5,12 +5,12 @@
     android:layout_height="@dimen/spinner_height">
 
     <TextView
-        style="@style/TextView"
         android:id="@+id/motorName"
-        android:layout_width="100dp"
+        style="@style/TextView"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="8dp"
         android:paddingEnd="8dp"
+        android:paddingStart="8dp"
         tools:text="@string/app_name" />
 
 </LinearLayout>

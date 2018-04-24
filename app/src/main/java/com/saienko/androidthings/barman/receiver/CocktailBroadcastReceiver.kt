@@ -14,7 +14,7 @@ import com.saienko.androidthings.barman.service.CocktailStatus
  * Time: 20:05
  */
 
-class CocktailBroadcastReceiver(internal var onResultListener: OnResultListener) : BroadcastReceiver() {
+class CocktailBroadcastReceiver(private var onResultListener: OnResultListener) : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
 

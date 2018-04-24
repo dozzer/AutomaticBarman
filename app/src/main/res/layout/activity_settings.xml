@@ -14,7 +14,7 @@
         style="@style/square_button"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:text="Motors"
+        android:text="@string/motors"
         android:textAllCaps="false"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,25 +23,24 @@
         android:id="@+id/btnGpio"
         style="@style/square_button"
         android:layout_marginStart="8dp"
-        android:text="Gpio"
+        android:text="@string/gpio"
         app:layout_constraintStart_toEndOf="@+id/btnMotors"
         app:layout_constraintTop_toTopOf="@+id/btnMotors" />
 
     <Button
         android:id="@+id/btnComponent"
         style="@style/square_button"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Component"
-        app:layout_constraintStart_toEndOf="@+id/btnGroup"
-        app:layout_constraintTop_toBottomOf="@+id/btnGpio" />
+        android:text="@string/component"
+        app:layout_constraintStart_toStartOf="@+id/btnMotors"
+        app:layout_constraintTop_toBottomOf="@+id/btnMotors" />
 
     <Button
         android:id="@+id/btnCocktails"
         style="@style/square_button"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Cocktails"
+        android:text="@string/cocktails"
         app:layout_constraintStart_toEndOf="@+id/btnComponent"
         app:layout_constraintTop_toBottomOf="@+id/btnGpio" />
 
@@ -58,16 +57,38 @@
         android:id="@+id/btnPositions"
         style="@style/square_button"
         android:layout_marginTop="8dp"
-        android:text="Positions"
-        app:layout_constraintStart_toStartOf="@+id/btnGroup"
-        app:layout_constraintTop_toBottomOf="@+id/btnGroup" />
+        android:text="@string/positions"
+        app:layout_constraintStart_toStartOf="@+id/btnComponent"
+        app:layout_constraintTop_toBottomOf="@+id/btnComponent" />
 
     <Button
-        android:id="@+id/btnGroup"
+        android:id="@+id/btnPreload"
         style="@style/square_button"
-        android:layout_marginTop="8dp"
-        android:text="Groups"
-        app:layout_constraintStart_toStartOf="@+id/btnMotors"
-        app:layout_constraintTop_toBottomOf="@+id/btnMotors" />
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/preload"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/startTest"
+        style="@style/square_button"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/starttest"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/massTest"
+        style="@style/square_button"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/masstest"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>

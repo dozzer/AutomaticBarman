@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/spinner_height"
     android:orientation="vertical">
 
     <TextView
-        style="@style/TextView"
         android:id="@+id/itemName"
+        style="@style/TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -18,18 +17,13 @@
 
     <ImageButton
         android:id="@+id/btnDelete"
+        style="@style/button.delete"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="8dp"
-        app:srcCompat="@drawable/ic_delete"
-        style="@style/square_small_button" />
+        android:layout_centerVertical="true" />
 
     <ImageButton
         android:id="@+id/btnEdit"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="16dp"
-        android:layout_toStartOf="@+id/btnDelete"
-        app:srcCompat="@drawable/ic_edit"
-        style="@style/square_small_button" />
+        style="@style/button.edit"
+        android:layout_toStartOf="@+id/btnDelete" />
 
 </RelativeLayout>

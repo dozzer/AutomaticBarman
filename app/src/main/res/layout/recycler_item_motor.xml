@@ -12,7 +12,7 @@
     <TextView
         android:id="@+id/motorName"
         style="@style/TextView"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -23,7 +23,7 @@
     <TextView
         android:id="@+id/motorPin"
         style="@style/TextView"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -32,9 +32,9 @@
         tools:text="motorPin" />
 
     <TextView
-        android:id="@+id/motorSpeed"
+        android:id="@+id/tvMotorSpeed"
         style="@style/TextView"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -44,21 +44,10 @@
 
     <ImageButton
         android:id="@+id/btnDelete"
-        style="@style/square_small_button"
-        android:layout_marginEnd="8dp"
+        style="@style/button.delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_delete" />
-
-    <!--<ImageButton-->
-    <!--andrmotorIdd:idmotorgpioId@+id/btnEdit"-->
-    <!--style="@style/square_small_button"-->
-    <!--android:layout_marginEnd="16dp"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintEnd_toStartOfmotorgpioId@+id/btnDelete"-->
-    <!--app:layout_constraintTop_toTopOf="parent"-->
-    <!--app:srcCompat="@drawable/ic_edit" />-->
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView4"
@@ -66,7 +55,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Name"
+        android:text="@string/name"
         app:layout_constraintBaseline_toBaselineOf="@+id/motorName"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -76,8 +65,8 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Speed"
-        app:layout_constraintBaseline_toBaselineOf="@+id/motorSpeed"
+        android:text="@string/speed"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvMotorSpeed"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -86,7 +75,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Pin"
+        android:text="@string/pin"
         app:layout_constraintBaseline_toBaselineOf="@+id/motorPin"
         app:layout_constraintStart_toStartOf="parent" />
 

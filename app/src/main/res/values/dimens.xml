@@ -1,7 +1,8 @@
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="square_size">120dp</dimen>
+    <!--<dimen name="fab_margin">16dp</dimen>-->
+    <dimen name="square_size">110dp</dimen>
     <dimen name="spinner_height">64dp</dimen>
+    <dimen name="spinner_height_small">48dp</dimen>
     <dimen name="text_size_normal">16sp</dimen>
     <dimen name="margin_normal">16dp</dimen>
 </resources>

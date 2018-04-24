@@ -2,9 +2,9 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/root"
     tools:context="com.saienko.androidthings.barman.ui.settings.AddCocktailActivity"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="81dp">
@@ -16,7 +16,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Save"
+        android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -25,7 +25,7 @@
         android:id="@+id/textView"
         style="@style/TextView"
         android:layout_marginStart="8dp"
-        android:text="Cocktail name"
+        android:text="@string/cocktail_name"
         app:layout_constraintBaseline_toBaselineOf="@+id/etName"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -39,48 +39,64 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="text"
-        android:text="New Cocktail Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/new_cocktail_name" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/ibAdd"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnSave"
+        app:layout_constraintEnd_toStartOf="@+id/ibAdd"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/newTagGroup"
+        tools:listitem="@layout/recycler_item_cocktail_element" />
 
     <ImageButton
         android:id="@+id/ibAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:contentDescription="@string/add_cocktail"
         android:src="@drawable/ic_fab_add"
         app:layout_constraintBottom_toTopOf="@+id/btnSave"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <TextView
-        style="@style/TextView"
-        android:id="@+id/textView9"
-        android:layout_marginTop="8dp"
-        android:text="Group"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/etName" />
-
-    <Spinner
-        android:id="@+id/spinnerGroup"
-        android:layout_width="0dp"
+    <android.support.design.chip.ChipGroup
+        android:id="@+id/existTagGroup"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etName"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_height="50dp">
+
+        <android.support.design.chip.Chip
+            android:id="@+id/some_chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipIcon="@drawable/ic_clear_all"
+            app:chipText="Just a test. I am waiting for a close button "
+            app:closeIcon="@drawable/ic_close" />
+    </android.support.design.chip.ChipGroup>
+
+    <android.support.design.chip.ChipGroup
+        android:id="@+id/newTagGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/etName"
-        app:layout_constraintTop_toBottomOf="@+id/etName" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/existTagGroup"
+        tools:layout_height="50dp" />
 
 </android.support.constraint.ConstraintLayout>

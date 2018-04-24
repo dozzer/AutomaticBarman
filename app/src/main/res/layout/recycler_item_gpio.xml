@@ -37,7 +37,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Name"
+        android:text="@string/name"
         app:layout_constraintBaseline_toBaselineOf="@+id/motorName"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -47,7 +47,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Pin"
+        android:text="@string/pin"
         app:layout_constraintBaseline_toBaselineOf="@+id/component"
         app:layout_constraintStart_toStartOf="parent" />
 

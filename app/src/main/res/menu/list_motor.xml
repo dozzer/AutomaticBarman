@@ -5,11 +5,11 @@
         android:id="@+id/action_remove_all"
         android:orderInCategory="200"
         android:title="@string/menu_remove_all"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_clear"
         android:orderInCategory="200"
         android:icon="@drawable/ic_clear_all"
         android:title="@string/menu_clear"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

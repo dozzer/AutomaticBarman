@@ -1,95 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
-    android:padding="8dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!--<android.support.constraint.ConstraintLayout-->
-        <!--android:id="@+id/demo_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:visibility="gone">-->
-
-        <!--<Button-->
-            <!--android:id="@+id/btnCocktail1"-->
-            <!--style="@style/square_button"-->
-            <!--android:layout_marginLeft="16dp"-->
-            <!--android:layout_marginTop="16dp"-->
-            <!--android:text="Jack and Coke"-->
-            <!--app:layout_constraintLeft_toLeftOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent" />-->
-
-        <!--<Button-->
-            <!--android:id="@+id/button2"-->
-            <!--style="@style/square_button"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:text="t2"-->
-            <!--app:layout_constraintLeft_toLeftOf="parent"-->
-            <!--app:layout_constraintStart_toEndOf="@+id/btnCocktail1"-->
-            <!--app:layout_constraintTop_toTopOf="@+id/btnCocktail1" />-->
-
-        <!--<Button-->
-            <!--android:id="@+id/button8"-->
-            <!--style="@style/square_button"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="0dp"-->
-            <!--android:text="Button"-->
-            <!--app:layout_constraintStart_toEndOf="@+id/button2"-->
-            <!--app:layout_constraintTop_toTopOf="@+id/button2" />-->
-
-        <!--<Button-->
-            <!--android:id="@+id/button9"-->
-            <!--style="@style/square_button"-->
-            <!--android:layout_marginStart="0dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:text="Button"-->
-            <!--app:layout_constraintStart_toStartOf="@+id/btnCocktail1"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/btnCocktail1" />-->
-
-        <!--<Button-->
-            <!--android:id="@+id/button10"-->
-            <!--style="@style/square_button"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:text="Button"-->
-            <!--app:layout_constraintStart_toEndOf="@+id/button9"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/button2" />-->
-
-        <!--<Button-->
-            <!--android:id="@+id/button11"-->
-            <!--style="@style/square_button"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:text="Button"-->
-            <!--app:layout_constraintStart_toEndOf="@+id/button10"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/button8" />-->
-
-
-    <!--</android.support.constraint.ConstraintLayout>-->
-
-    <!--<include layout="@layout/progress_view" />-->
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="73dp">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvCocktails"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tagsLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/recycler_item_main_cocktail" />
 
-    <!--<Button-->
-    <!--android:id="@+id/test"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="test" />-->
-
-    <ImageButton
-        android:id="@+id/settingsBtn"
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:id="@+id/tagsSelectedLayout"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_margin="16dp"
-        android:background="@null"
-        android:padding="8dp"
-        android:src="@drawable/ic_settings" />
-</FrameLayout>
+        android:layout_margin="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.cunoraz.tagview.TagView
+            android:id="@+id/tagSelectedGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/tagsLayout"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tagsSelectedLayout">
+
+        <com.cunoraz.tagview.TagView
+            android:id="@+id/tagGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

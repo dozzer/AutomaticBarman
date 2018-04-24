@@ -6,10 +6,10 @@
     <color name="translucent">#AA000000</color>
 
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorBlack">#000000</color>
+    <color name="colorBlack">#00000000</color>
     <color name="darker_gray">#aaa</color>
     <color name="lighter_gray">#ddd</color>
-
+    <color name="textColor">@color/colorBlack</color>
 
 
     <color name="red_50">#FFEBEE</color>
